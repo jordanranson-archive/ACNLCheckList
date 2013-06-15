@@ -73,7 +73,8 @@
         
         h1 {
             font-size: 48pt;
-            text-shadow: 3px 3px #1a3014;
+            text-shadow: 3px 3px #1a3014,
+                         -2px -2px #f4dc92;
             color: #e6c459;
         }
         
@@ -87,6 +88,22 @@
             margin-bottom: 15px;
         }
         
+        input[type=text] {
+            font-size: 22pt;
+            font-family: 'Conv_FinkHeavy';
+            padding: 0 6px;
+            margin: 0;
+            color: #222;
+            vertical-align: top;
+            border: none;
+            background: #f8efde;
+            border-radius: 10px;
+            margin-top: -2px;
+            box-shadow: 3px 3px #d5a669 inset;
+            width: 500px;
+            outline: none;
+        }
+        
         input[type=checkbox] {
             display: none;
         }
@@ -98,14 +115,18 @@
             font-size: 22pt;
             display: block;
             border-radius: 100px;
-            border-top: solid 6px #fafafa;
-            border-left: solid 6px #fafafa;
-            border-bottom: solid 6px #c49353;
-            border-right: solid 6px #c49353;
+            border-top: solid 6px #f8efde;
+            border-left: solid 6px #f8efde;
+            border-bottom: solid 6px #d5a669;
+            border-right: solid 6px #d5a669;
             height: 32px;
             line-height: 32px;
         }
         
+        
+        input[type=checkbox] ~ span.indented {
+            margin-left: 60px;
+        }
         
         input[type=checkbox]:checked ~ span {
             background: #2f762c;
@@ -114,6 +135,12 @@
             border-left-color: #6ea33f;
             border-bottom-color: #2c5121;
             border-right-color: #2c5121;
+        }
+        
+        input[type=checkbox]:checked ~ span input[type=text] {
+            box-shadow: 3px 3px #2c5121 inset;
+            background: #3e8b3a;
+            color: #9fec5b;
         }
         
         input[type=checkbox] ~ span i {
@@ -156,66 +183,156 @@
             box-shadow: 4px 4px #1a3014,
                         -4px -4px #6ea33f;
         }
+        
+        .pull-right {
+            float: right;
+        }
+        
+        .pull-left {
+            float: left;
+        }
+        
+        .btn {
+            background: #e6c459;
+            border-radius: 100px;
+            padding: 7px 14px;
+            display: inline-block;
+            color: #955517;
+            border-top: solid 5px #f4dc92;
+            border-left: solid 5px #f4dc92;
+            border-bottom: solid 5px #d38d29;
+            border-right: solid 5px #d38d29;
+        }
+        
+        .clearfix {
+            overflow: hidden;
+            clear: both;
+        }
     </style>
+    <script src="http://code.jquery.com/jquery-2.0.2.min.js"></script>
+    <script src="knockout-2.2.1.js"></script>
     <script>
+        function Section(title, tasks) {
+            var self = this;
+            
+            self.title = ko.observable(title);
+            self.tasks = ko.observableArray(tasks);
+        }
+        
+        function Task(indented, textbox, description) {
+            var self = this;
+            
+            self.done = ko.observable(false);
+            self.indented = ko.observable(indented);
+            self.textbox = ko.observable(textbox);
+            self.description = ko.observable(description);
+        }
     
+        function App(sections) {
+            var self = this;
+            
+            self.sections = ko.observableArray(sections);
+        }
+        
+        
+        // The tasks to do
+        var todo = [
+        
+            new Section("Main Street (Morning)", [
+                new Task(false, false, "Buy out T&T mart"),
+                new Task(false, false, "Buy out Gardening Shop"),
+                new Task(false, false, "Buy out Able Sisters"),
+                new Task(false, false, "Talk to Sable"),
+            ]),
+            
+            new Section("Town", [
+                new Task(false, false, "Water flowers and weed"),
+                new Task(false, false, "Harvest fruit"),
+                new Task(false, false, "Collect shels on the beach"),
+                new Task(false, false, "Smack all 5 rocks"),
+                new Task(true, false, "Rock 1"),
+                new Task(true, false, "Rock 2"),
+                new Task(true, false, "Rock 3"),
+                new Task(true, false, "Rock 4"),
+                new Task(true, false, "Rock 5"),
+                new Task(false, false, "Collect all 4 fossils"),
+                new Task(true, false, "Fossil 1"),
+                new Task(true, false, "Fossil 2"),
+                new Task(true, false, "Fossil 3"),
+                new Task(true, false, "Fossil 4"),
+                new Task(false, false, "Talk to all the towns folk"),
+                new Task(true, false, "Bunnie"),
+                new Task(true, false, "Mitzi"),
+                new Task(true, false, "Purrl"),
+                new Task(true, false, "Rosie"),
+                new Task(true, false, "Whinnie"),
+                new Task(true, false, "Lopez"),
+                new Task(true, false, "Chief"),
+                new Task(true, false, "Paula"),
+                new Task(true, false, "Tucker"),
+                new Task(true, false, "Biff"),
+                new Task(false, false, "Write letters to all the towns folk"),
+                new Task(false, false, "Check town square for events"),
+                new Task(false, false, "Check the campsite for guests"),
+            ]),
+            
+            new Section("The Island", [
+                new Task(false, false, "Check the island shop"),
+                new Task(false, false, "Collect a full load of insects"),
+                new Task(false, false, "Collect a full load of fish"),
+                new Task(false, false, "Go on a tour and collect fruit"),
+            ]),
+            
+            new Section("Main Street (Evening)", [
+                new Task(false, false, "Donate fish to the museum"),
+                new Task(false, false, "Donate insects to the museum"),
+                new Task(false, false, "Pay back 5% of house loan"),
+            ]),
+            
+            new Section("Town (Evening)", [
+                new Task(false, false, "Contribute towards public works project"),
+                new Task(false, false, "Check in with Isabelle"),
+            ]),
+            
+        ];
+        
+        $(function() {
+            var app = new App(todo);
+            ko.applyBindings(app);
+        });
     </script>
 </head>
 <body>
     <div class="wrapper">
-        <h1>Bitville Daily Check List</h1>
+    
+        <div class="clearfix">
+            <h1 class="pull-left">Bitville Daily Check List</h1>
+            <div class="btn pull-right" style="margin-top: 9px">Reset List</div>
+        </div>
+        
+        <!-- ko foreach: sections -->
         
         <section class="list">
-            <h2>Main Street (Morning)</h2>
-            <ul>
-                <li><label><input type="checkbox"><span><i></i>Buy out T&amp;T mart</span></li>
-                <li><label><input type="checkbox"><span><i></i>Buy out Gardening Shop</span></li>
-                <li><label><input type="checkbox"><span><i></i>Buy out Able Sisters</span></li>
-                <li><label><input type="checkbox"><span><i></i>Talk to Sable</span></li>
+            <h2 data-bind="text: title()"></h2>
+            <ul data-bind="foreach: tasks">
+                <li>
+                    <label>
+                        <input type="checkbox" data-bind="checked: done()">
+                        <span data-bind="css: { indented: indented() }"><i></i>
+                            <!-- ko if: textbox() -->
+                            <input type="text" data-bind="value: description()">
+                            <!-- /ko -->
+                            
+                            <!-- ko if: !textbox() -->
+                            <!-- ko text: description --><!-- /ko -->
+                            <!-- /ko -->
+                        </span>
+                    </label>
+                </li>
             </ul>
         </section>
         
-        <section class="list">
-            <h2>Town</h2>
-            <ul>
-                <li><label><input type="checkbox"><span><i></i>Water flowers and weed</span></li>
-                <li><label><input type="checkbox"><span><i></i>Harvest fruit</span></li>
-                <li><label><input type="checkbox"><span><i></i>Smack all 5 rocks</span></li>
-                <li><label><input type="checkbox"><span><i></i>Collect all 4 fossils</span></li>
-                <li><label><input type="checkbox"><span><i></i>Talk to all the towns folk</span></li>
-                <li><label><input type="checkbox"><span><i></i>Write letters to all the towns folk</span></li>
-                <li><label><input type="checkbox"><span><i></i>Check town square for events</span></li>
-                <li><label><input type="checkbox"><span><i></i>Check the campsite for events</span></li>
-                <li><label><input type="checkbox"><span><i></i>Check the beach for Gulliver</span></li>
-            </ul>
-        </section>
-        
-        <section class="list">
-            <h2>The Island</h2>
-            <ul>
-                <li><label><input type="checkbox"><span><i></i>Check the island shop</span></li>
-                <li><label><input type="checkbox"><span><i></i>Collect a full load of insects</span></li>
-                <li><label><input type="checkbox"><span><i></i>Collect a full load of fish</span></li>
-                <li><label><input type="checkbox"><span><i></i>Go on a tour and collect fruit</span></li>
-            </ul>
-        </section>
-        
-        <section class="list">
-            <h2>Main Street (Evening)</h2>
-            <ul>
-                <li><label><input type="checkbox"><span><i></i>Donate fish to the museum</span></li>
-                <li><label><input type="checkbox"><span><i></i>Donate insects to the museum</span></li>
-                <li><label><input type="checkbox"><span><i></i>Pay back 5% of house loan</span></li>
-            </ul>
-        </section>
-        
-        <section class="list">
-            <h2>Town (Evening)</h2>
-            <ul>
-                <li><label><input type="checkbox"><span><i></i>Contribute towards public works project</span></li>
-                <li><label><input type="checkbox"><span><i></i>Check in with Isabelle</span></li>
-            </ul>
-        </section>
+        <!-- /ko -->
         
     </div>
 </body>
