@@ -211,93 +211,115 @@
     </style>
     <script src="http://code.jquery.com/jquery-2.0.2.min.js"></script>
     <script src="knockout-2.2.1.js"></script>
+    <script src="knockout.mapping-latest.js"></script>
     <script>
-        function Section(title, tasks) {
-            var self = this;
-            
-            self.title = ko.observable(title);
-            self.tasks = ko.observableArray(tasks);
+        function obs(data) {
+            return ko.observable(data);
         }
         
-        function Task(indented, textbox, description) {
-            var self = this;
-            
-            self.done = ko.observable(false);
-            self.indented = ko.observable(indented);
-            self.textbox = ko.observable(textbox);
-            self.description = ko.observable(description);
+        function obsa(data) {
+            return ko.observableArray(data);
         }
     
         function App(sections) {
             var self = this;
-            
             self.sections = ko.observableArray(sections);
+            
+           self.save = function() {
+                var data = ko.toJSON(self.sections);
+                localStorage.todo = data;
+                
+                return true;
+            };
+            
+            self.reset = function() {
+                localStorage.clear();
+                self.sections(todo);
+            }
         }
         
         
         // The tasks to do
         var todo = [
         
-            new Section("Main Street (Morning)", [
-                new Task(false, false, "Buy out T&T mart"),
-                new Task(false, false, "Buy out Gardening Shop"),
-                new Task(false, false, "Buy out Able Sisters"),
-                new Task(false, false, "Talk to Sable"),
-            ]),
+            {
+                title: obs("Main Street (Morning)"),
+                tasks: obsa([
+                    {indented: obs(false), textbox: obs(false), description: obs("Buy out T&T mart"), done: obs(false)},
+                    {indented: obs(false), textbox: obs(false), description: obs("Buy out Gardening Shop"), done: obs(false)},
+                    {indented: obs(false), textbox: obs(false), description: obs("Buy out Able Sisters"), done: obs(false)},
+                    {indented: obs(false), textbox: obs(false), description: obs("Talk to Sable"), done: obs(false)},
+                ])
+            },
             
-            new Section("Town", [
-                new Task(false, false, "Water flowers and weed"),
-                new Task(false, false, "Harvest fruit"),
-                new Task(false, false, "Collect shels on the beach"),
-                new Task(false, false, "Smack all 5 rocks"),
-                new Task(true, false, "Rock 1"),
-                new Task(true, false, "Rock 2"),
-                new Task(true, false, "Rock 3"),
-                new Task(true, false, "Rock 4"),
-                new Task(true, false, "Rock 5"),
-                new Task(false, false, "Collect all 4 fossils"),
-                new Task(true, false, "Fossil 1"),
-                new Task(true, false, "Fossil 2"),
-                new Task(true, false, "Fossil 3"),
-                new Task(true, false, "Fossil 4"),
-                new Task(false, false, "Talk to all the towns folk"),
-                new Task(true, false, "Bunnie"),
-                new Task(true, false, "Mitzi"),
-                new Task(true, false, "Purrl"),
-                new Task(true, false, "Rosie"),
-                new Task(true, false, "Whinnie"),
-                new Task(true, false, "Lopez"),
-                new Task(true, false, "Chief"),
-                new Task(true, false, "Paula"),
-                new Task(true, false, "Tucker"),
-                new Task(true, false, "Biff"),
-                new Task(false, false, "Write letters to all the towns folk"),
-                new Task(false, false, "Check town square for events"),
-                new Task(false, false, "Check the campsite for guests"),
-            ]),
+            {
+                title: obs("Town"),
+                tasks: obsa([
+                    {indented: obs(false), textbox: obs(false), description: obs("Water flowers and weed"), done: obs(false)},
+                    {indented: obs(false), textbox: obs(false), description: obs("Harvest fruit"), done: obs(false)},
+                    {indented: obs(false), textbox: obs(false), description: obs("Collect shels on the beach"), done: obs(false)},
+                    {indented: obs(false), textbox: obs(false), description: obs("Smack all 5 rocks"), done: obs(false)},
+                    {indented: obs(true), textbox: obs(false), description: obs("Rock 1"), done: obs(false)},
+                    {indented: obs(true), textbox: obs(false), description: obs("Rock 2"), done: obs(false)},
+                    {indented: obs(true), textbox: obs(false), description: obs("Rock 3"), done: obs(false)},
+                    {indented: obs(true), textbox: obs(false), description: obs("Rock 4"), done: obs(false)},
+                    {indented: obs(true), textbox: obs(false), description: obs("Rock 5"), done: obs(false)},
+                    {indented: obs(false), textbox: obs(false), description: obs("Collect all 4 fossils"), done: obs(false)},
+                    {indented: obs(true), textbox: obs(false), description: obs("Fossil 1"), done: obs(false)},
+                    {indented: obs(true), textbox: obs(false), description: obs("Fossil 2"), done: obs(false)},
+                    {indented: obs(true), textbox: obs(false), description: obs("Fossil 3"), done: obs(false)},
+                    {indented: obs(true), textbox: obs(false), description: obs("Fossil 4"), done: obs(false)},
+                    {indented: obs(false), textbox: obs(false), description: obs("Talk to all the towns folk"), done: obs(false)},
+                    {indented: obs(true), textbox: obs(false), description: obs("Bunnie"), done: obs(false)},
+                    {indented: obs(true), textbox: obs(false), description: obs("Mitzi"), done: obs(false)},
+                    {indented: obs(true), textbox: obs(false), description: obs("Purrl"), done: obs(false)},
+                    {indented: obs(true), textbox: obs(false), description: obs("Rosie"), done: obs(false)},
+                    {indented: obs(true), textbox: obs(false), description: obs("Whinnie"), done: obs(false)},
+                    {indented: obs(true), textbox: obs(false), description: obs("Lopez"), done: obs(false)},
+                    {indented: obs(true), textbox: obs(false), description: obs("Chief"), done: obs(false)},
+                    {indented: obs(true), textbox: obs(false), description: obs("Paula"), done: obs(false)},
+                    {indented: obs(true), textbox: obs(false), description: obs("Tucker"), done: obs(false)},
+                    {indented: obs(true), textbox: obs(false), description: obs("Biff"), done: obs(false)},
+                    {indented: obs(false), textbox: obs(false), description: obs("Write letters to all the towns folk"), done: obs(false)},
+                    {indented: obs(false), textbox: obs(false), description: obs("Check town square for events"), done: obs(false)},
+                    {indented: obs(false), textbox: obs(false), description: obs("Check the campsite for guests"), done: obs(false)},
+                ])
+            },
             
-            new Section("The Island", [
-                new Task(false, false, "Check the island shop"),
-                new Task(false, false, "Collect a full load of insects"),
-                new Task(false, false, "Collect a full load of fish"),
-                new Task(false, false, "Go on a tour and collect fruit"),
-            ]),
+            {
+                title: obs("The Island"),
+                tasks: obsa([
+                    {indented: obs(false), textbox: obs(false), description: obs("Check the island shop"), done: obs(false)},
+                    {indented: obs(false), textbox: obs(false), description: obs("Collect a full load of insects"), done: obs(false)},
+                    {indented: obs(false), textbox: obs(false), description: obs("Collect a full load of fish"), done: obs(false)},
+                    {indented: obs(false), textbox: obs(false), description: obs("Go on a tour and collect fruit"), done: obs(false)},
+                ])
+            },
             
-            new Section("Main Street (Evening)", [
-                new Task(false, false, "Donate fish to the museum"),
-                new Task(false, false, "Donate insects to the museum"),
-                new Task(false, false, "Pay back 5% of house loan"),
-            ]),
+            {
+                title: obs("Main Street (Evening)"),
+                tasks: obsa([
+                    {indented: obs(false), textbox: obs(false), description: obs("Donate fish to the museum"), done: obs(false)},
+                    {indented: obs(false), textbox: obs(false), description: obs("Donate insects to the museum"), done: obs(false)},
+                    {indented: obs(false), textbox: obs(false), description: obs("Pay back 5% of house loan"), done: obs(false)},
+                ])
+            },
             
-            new Section("Town (Evening)", [
-                new Task(false, false, "Contribute towards public works project"),
-                new Task(false, false, "Check in with Isabelle"),
-            ]),
+            {
+                title: obs("Town (Evening)"),
+                tasks: obsa([
+                    {indented: obs(false), textbox: obs(false), description: obs("Contribute towards public works project"), done: obs(false)},
+                    {indented: obs(false), textbox: obs(false), description: obs("Check in with Isabelle"), done: obs(false)},
+                ])
+            },
             
         ];
         
         $(function() {
-            var app = new App(todo);
+            var jsonData = localStorage.todo;
+            var taskList = localStorage.todo === undefined ? todo : ko.mapping.fromJSON(jsonData)();
+            var app = new App(taskList);
+
             ko.applyBindings(app);
         });
     </script>
@@ -307,7 +329,7 @@
     
         <div class="clearfix">
             <h1 class="pull-left">Bitville Daily Check List</h1>
-            <div class="btn pull-right" style="margin-top: 9px">Reset List</div>
+            <div class="btn pull-right" style="margin-top: 9px" data-bind="click: reset">Reset List</div>
         </div>
         
         <!-- ko foreach: sections -->
@@ -316,11 +338,11 @@
             <h2 data-bind="text: title()"></h2>
             <ul data-bind="foreach: tasks">
                 <li>
-                    <label>
-                        <input type="checkbox" data-bind="checked: done()">
+                    <label data-bind="click: $root.save">
+                        <input type="checkbox" data-bind="checked: done">
                         <span data-bind="css: { indented: indented() }"><i></i>
                             <!-- ko if: textbox() -->
-                            <input type="text" data-bind="value: description()">
+                            <input type="text" data-bind="value: description, event: { keyup: $root.save }">
                             <!-- /ko -->
                             
                             <!-- ko if: !textbox() -->
